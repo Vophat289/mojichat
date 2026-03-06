@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "./ui/label";
+import { Label } from "../ui/label";
 
 import { z } from "zod";
 import {useForm} from 'react-hook-form';
