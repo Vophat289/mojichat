@@ -69,6 +69,7 @@ export function SigninForm({ className, ...props}: React.ComponentProps<"div">){
                 <Input 
                   type="password" 
                   id="password" 
+                  placeholder="Mật khẩu của bạn" 
                   {...register("password")}
                   />
                 {errors.password && (
