@@ -1,15 +1,20 @@
 import {create} from 'zustand';
 import { toast } from 'sonner';
 import { authService } from '@/services/authService';
+import type { AuthState } from '@/types/store';
 
-export const useAuthStore = create ((set, get) =>{
+export const useAuthStore = create<AuthState>((set, get) =>({
     accessToken: null,
     user: null,
-    loading: false
+    loading: false,
+
+    clearState: () => {
+        set({ accessToken: null, user: null, loading: false})
+    },
 
     signUp: async(username, password, email, firstName, lastName) => {
         try{
-            set({loading: true})
+            set({loading: true});
 
             //gọi api
             await authService.signUp(username, password, email, firstName, lastName);
@@ -21,5 +26,37 @@ export const useAuthStore = create ((set, get) =>{
         }finally{
             set({loading: false});
         }
+    },
+
+    signIn: async(username, password) => {
+        try{
+            set({loading: true});
+
+            const {accessToken} = await authService.signIn(username, password);
+            set({accessToken});
+
+            toast.success('Chào mừng quay lại với Moji !');
+            return true;
+        }catch(error){
+            console.error(error);
+            toast.error('Đăng nhập không thành công');
+            return false;
+        }finally{
+            set({loading: false});
+        }
+    },
+
+    signOut: async() => {
+        try {
+            get().clearState();
+            await authService.signOut();
+            toast.success('Đăng xuất thành công');
+            
+        } catch (error) {
+            console.error(error);
+            toast.error('Đăng xuất không thành công');
+        }
     }
-})
+
+
+}));
