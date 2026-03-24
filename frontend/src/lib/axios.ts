@@ -5,4 +5,17 @@ const api = axios.create({
     withCredentials: true, 
 });
 
+//gắn accesstoken vào req header
+api.interceptors.request.use(async (config) => {
+    // Sử dụng dynamic import để tránh circular dependency
+    const { useAuthStore } = await import('@/stores/useAuthStore');
+    const { accessToken } = useAuthStore.getState();
+
+    if(accessToken){
+        config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+
+    return config;  
+})
+
 export default api;

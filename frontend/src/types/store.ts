@@ -20,4 +20,6 @@ export interface AuthState {
     ) => Promise<boolean>; 
 
     signOut: () => Promise<void>;
+
+    fetchMe:() => Promise<void>;
 }
