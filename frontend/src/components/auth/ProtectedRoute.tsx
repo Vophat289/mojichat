@@ -19,6 +19,8 @@ const ProtectedRoute = () => {
       setStarting(false);
     }
 
+    
+
     useEffect(() => {
       init();
     }, [])
