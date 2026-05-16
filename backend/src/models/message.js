@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import express from 'express';
+
 
 const messageSchema = new mongoose.Schema({
     conversationId: {
