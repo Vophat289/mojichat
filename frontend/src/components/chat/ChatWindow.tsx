@@ -41,6 +41,12 @@ const ChatWindow = () => {
     : null;
   const isOnline = !isGroup && otherUser && onlineUserIds.includes(otherUser._id);
 
+  const handleCall = (type: 'video' | 'voice') => {
+    if (otherUser && (window as any).startWebRTCCall) {
+      (window as any).startWebRTCCall(otherUser, type);
+    }
+  };
+
   return (
     <div className="flex-1 flex flex-col h-full bg-white">
       {/* Chat Header */}
@@ -65,12 +71,26 @@ const ChatWindow = () => {
         </div>
         
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" className="text-gray-500 hover:text-blue-600">
-            <Phone className="w-5 h-5" />
-          </Button>
-          <Button variant="ghost" size="icon" className="text-gray-500 hover:text-blue-600">
-            <Video className="w-5 h-5" />
-          </Button>
+          {!isGroup && (
+            <>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="text-gray-500 hover:text-blue-600"
+                onClick={() => handleCall('voice')}
+              >
+                <Phone className="w-5 h-5" />
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="text-gray-500 hover:text-blue-600"
+                onClick={() => handleCall('video')}
+              >
+                <Video className="w-5 h-5" />
+              </Button>
+            </>
+          )}
           <Button variant="ghost" size="icon" className="text-gray-500 hover:text-blue-600">
             <Info className="w-5 h-5" />
           </Button>

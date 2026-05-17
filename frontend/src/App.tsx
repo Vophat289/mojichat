@@ -6,12 +6,14 @@ import SignUpPage from './pages/SignUpPage'
 import ChatAppPage from './pages/ChatAppPage'
 import {Toaster} from 'sonner';
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import CallManager from './components/call/CallManager';
 
 function App() {
 
   return (
     <>
     <Toaster richColors />
+    <CallManager />
     <BrowserRouter>
       <Routes>
 
