@@ -110,6 +110,56 @@ export function initSocket(httpServer) {
       }
     });
 
+    // ───── WEBRTC SIGNALING ─────
+    socket.on('call_user', ({ toUserId, offer, type }) => {
+      const toSockets = onlineUsers.get(toUserId.toString());
+      if (toSockets) {
+        toSockets.forEach(sid => {
+          io.to(sid).emit('incoming_call', {
+            fromUser: socket.user,
+            offer,
+            type
+          });
+        });
+      }
+    });
+
+    socket.on('make_answer', ({ toUserId, answer }) => {
+      const toSockets = onlineUsers.get(toUserId.toString());
+      if (toSockets) {
+        toSockets.forEach(sid => {
+          io.to(sid).emit('call_answered', { answer });
+        });
+      }
+    });
+
+    socket.on('ice_candidate', ({ toUserId, candidate }) => {
+      const toSockets = onlineUsers.get(toUserId.toString());
+      if (toSockets) {
+        toSockets.forEach(sid => {
+          io.to(sid).emit('ice_candidate', { candidate });
+        });
+      }
+    });
+
+    socket.on('reject_call', ({ toUserId }) => {
+      const toSockets = onlineUsers.get(toUserId.toString());
+      if (toSockets) {
+        toSockets.forEach(sid => {
+          io.to(sid).emit('call_rejected');
+        });
+      }
+    });
+
+    socket.on('end_call', ({ toUserId }) => {
+      const toSockets = onlineUsers.get(toUserId.toString());
+      if (toSockets) {
+        toSockets.forEach(sid => {
+          io.to(sid).emit('call_ended');
+        });
+      }
+    });
+
     // ───── GET ONLINE STATUS ─────
     socket.on('get_online_users', () => {
       socket.emit('online_users_list', {
